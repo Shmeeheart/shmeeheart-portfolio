@@ -10,7 +10,7 @@ function Navcomp(props) {
   return (
     <div>
       <Navbar>
-        <NavbarBrand href='/'>reactstrap</NavbarBrand>
+        <NavbarBrand href='/'></NavbarBrand>
         <Nav className='me-auto' navbar>
           <NavItem>
             <NavLink onClick={clickHandler} id='about' href='#'>

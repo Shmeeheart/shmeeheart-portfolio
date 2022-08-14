@@ -83,19 +83,17 @@ function Example(args) {
       />
       {slides}
       <CarouselControl
-        direction="prev"
-        directionText="Previous"
+        direction='prev'
+        directionText='Previous'
         onClickHandler={previous}
       />
       <CarouselControl
-        direction="next"
-        directionText="Next"
+        direction='next'
+        directionText='Next'
         onClickHandler={next}
       />
     </Carousel>
   );
 }
-
-export default Example;
 
 export default Portfolio;
