@@ -11,7 +11,7 @@ function Navcomp(props) {
     <div>
       <Navbar>
         <NavbarBrand href='/'></NavbarBrand>
-        <Nav className='me-auto' navbar>
+        <Nav className='flex-row' navbar>
           <NavItem>
             <NavLink onClick={clickHandler} id='about' href='#'>
               About Me
