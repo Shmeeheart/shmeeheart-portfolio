@@ -1,59 +1,45 @@
-import e from 'express';
-import React, { useState } from 'react';
+const form = document.getElementById('form');
+const result = document.getElementById('result');
 
-const { name, email, message } = formState;
-setFormState({ ...formState, [e.target.name]: e.target.value })(
-  <input type='text' defaultValue={name} onChange={handleChange} name='name' />
-),
-  (
-    <input
-      type='email'
-      defaultValue={email}
-      name='email'
-      onChange={handleChange}
-    />
-  ),
-  (
-    <textarea
-      name='message'
-      defaultValue={message}
-      onChange={handleChange}
-      rows='5'
-    />
-  );
+form.addEventListener('submit', function (e) {
+  const formData = new FormData(form);
+  e.preventDefault();
+  var object = {};
+  formData.forEach((value, key) => {
+    object[key] = value;
+  });
+  var json = JSON.stringify(object);
+  result.innerHTML = 'Please wait...';
 
-const [formState, setFormState] = useState({
-  name: '',
-  email: '',
-  message: '',
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: json,
+  })
+    .then(async (response) => {
+      let json = await response.json();
+      if (response.status == 200) {
+        result.innerHTML = json.message;
+        result.classList.remove('text-gray-500');
+        result.classList.add('text-green-500');
+      } else {
+        console.log(response);
+        result.innerHTML = json.message;
+        result.classList.remove('text-gray-500');
+        result.classList.add('text-red-500');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      result.innerHTML = 'Something went wrong!';
+    })
+    .then(function () {
+      form.reset();
+      setTimeout(() => {
+        result.style.display = 'none';
+      }, 5000);
+    });
 });
-
-function ContactForm() {
-  function handleChange(e) {
-    setFormState({ ...formState, name: e.target.value });
-  }
-
-  console.log(formState);
-  return (
-    <section>
-      <h1>Contact me</h1>
-      <form id='contact-form'>
-        <div>
-          <label htmlFor='name'>Name:</label>
-          <input type='text' name='name' />
-        </div>
-        <div>
-          <label htmlFor='email'>Email address:</label>
-          <input type='email' name='email' />
-        </div>
-        <div>
-          <label htmlFor='message'>Message:</label>
-          <textarea name='message' rows='5' />
-        </div>
-        <button type='submit'>Submit</button>
-      </form>
-    </section>
-  );
-}
-
-export default ContactForm;
