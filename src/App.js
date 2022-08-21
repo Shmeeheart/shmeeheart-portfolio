@@ -3,7 +3,6 @@ import { useState } from 'react';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Portfolio from './pages/Portfolio';
-import './App.css';
 import Navbar from './components/Navbar';
 
 function App() {
