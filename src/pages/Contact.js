@@ -1,45 +1,49 @@
-const form = document.getElementById('form');
-const result = document.getElementById('result');
+import React, { useState } from 'react';
 
-form.addEventListener('submit', function (e) {
-  const formData = new FormData(form);
-  e.preventDefault();
-  var object = {};
-  formData.forEach((value, key) => {
-    object[key] = value;
-  });
-  var json = JSON.stringify(object);
-  result.innerHTML = 'Please wait...';
+const Contact = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
 
-  fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: json,
-  })
-    .then(async (response) => {
-      let json = await response.json();
-      if (response.status == 200) {
-        result.innerHTML = json.message;
-        result.classList.remove('text-gray-500');
-        result.classList.add('text-green-500');
-      } else {
-        console.log(response);
-        result.innerHTML = json.message;
-        result.classList.remove('text-gray-500');
-        result.classList.add('text-red-500');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      result.innerHTML = 'Something went wrong!';
-    })
-    .then(function () {
-      form.reset();
-      setTimeout(() => {
-        result.style.display = 'none';
-      }, 5000);
-    });
-});
+  const submit = () => {
+    if (name && email && message) {
+      // TODO - send mail
+
+      setName('');
+      setEmail('');
+      setMessage('');
+      setEmailSent(true);
+    } else {
+      alert('Please fill in all fields.');
+    }
+  };
+
+  return (
+    <div id='contact-form'>
+      <input
+        type='text'
+        placeholder='Your Name'
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type='email'
+        placeholder='Your email address'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <textarea
+        placeholder='Your message'
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      ></textarea>
+      <button onClick={submit}>Send Message</button>
+      <span className={emailSent ? 'visible' : null}>
+        Thank you for your message, we will be in touch in no time!
+      </span>
+    </div>
+  );
+};
+
+export default Contact;
